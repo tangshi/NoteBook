@@ -1,7 +1,5 @@
 OpenGL学习笔记
 ##########
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-$$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
 
 ## `gluLookAt()`函数的深入理解
 
@@ -22,3 +20,27 @@ $$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
 `gluLookAt` 使用视点、指出场景中心的参考点和上方向向量这三个参数创建了一个视图矩阵。
 
 该矩阵的效果为：参考点(`center`)位于z轴负方向，视点(`eye`)位于原点，参考点和视点共同确定了相机坐标的z轴；当使用普通的投影矩阵(我估计就是正交投影和透视投影吧)时，场景的中心点(`center`)将被渲染到视口的中心，确定了裁切面；上方向向量在观察平面(xoy平面)上的投影 所确定的方向被映射为正y轴，从而令它指向视口上方。特别强调的是，向上矢量不可以与视线(从视点到参考点的连线)平行，否则上方向向量将无效。
+
+> Let
+> 
+> <img src="http://chart.googleapis.com/chart?cht=tx&chl=F = \begin{pmatrix}centerX-eyeX \\ centerX-eyeX \\ centerX-eyeX \\ \end{pmatrix}}" style="border:none;">
+> 
+> Let UP be the vector
+> 
+> <img src="http://chart.googleapis.com/chart?cht=tx&chl=\left( upX\\ upY\\ upZ\\ \right)" style="border:none;">.
+
+> Then normalize as follows:
+>
+> <img src="http://chart.googleapis.com/chart?cht=tx&chl=f = \frac{F}{\ | F \ |}" style="border:none;">
+>
+> <img src="http://chart.googleapis.com/chart?cht=tx&chl=UP^\star = \frac{UP}{\ | UP \ |}" style="border:none;">
+>
+> Finally, let 
+> 
+> <img src="http://chart.googleapis.com/chart?cht=tx&chl=s = f\times UP^\star" style="border:none;">
+>
+> <img src="http://chart.googleapis.com/chart?cht=tx&chl=u = \left( \frac{s}{\ | s \ |} \right) \times f" style="border:none;">
+>
+> M is then constructed as follows:
+>
+> <img src="http://chart.googleapis.com/chart?cht=tx&chl=s = f\times UP^\star" style="border:none;">
