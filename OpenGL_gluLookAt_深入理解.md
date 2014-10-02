@@ -1,9 +1,13 @@
 # OpenGL`gluLookAt()`函数的深入理解
 
-  void gluLookAt(	GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ,           // Specifies the position of the eye point.      相机位置
-   	              GLdouble centerX, GLdouble centerY, GLdouble centerZ,  // Specifies the position of the reference point.参考点
-   	              GLdouble upX, GLdouble upY, GLdouble upZ);             // Specifies the direction of the up vector.     上方向
-   	              
+
+```
+void gluLookAt(	GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ,           // Specifies the position of the eye point.      相机位置
+   	            GLdouble centerX, GLdouble centerY, GLdouble centerZ,  // Specifies the position of the reference point.参考点
+   	            GLdouble upX, GLdouble upY, GLdouble upZ);             // Specifies the direction of the up vector.     上方向
+``` 	              
+
+
 
 `gluLookAt()`函数用于定义视图变换。深入学习该函数有助于理解OpenGL的模型视图变换。先看[官方说明](https://www.opengl.org/sdk/docs/man2/xhtml/gluLookAt.xml)：
 
@@ -20,7 +24,7 @@
 
 ##### 函数操作流程
 
-![gluLookAt Description](gluLookAtDesc.png)
+![gluLookAt Description](Images/gluLookAtDesc.png)
 
 ##### 解读操作流程
 
@@ -30,12 +34,12 @@
 4. 叉乘`f`和`s`可以得到`u`，即相机坐标系的y轴
 5. 经过以上步骤，可以构建一个矩阵M：
 
-![M矩阵](gluLookAtM.png)
+![M矩阵](Images/gluLookAtM.png)
 
 `gluLookAt`函数等价与以下操作：
 
 ```
-glMultMatrixf(M); // 左乘旋转矩阵M
+glMultMatrixf(M); // 当前矩阵右乘旋转矩阵M
 glTranslated(-eyex, -eyey, -eyez); // 反向平移
 ```
 
@@ -55,37 +59,45 @@ gluLookAt(GLdouble eyex, GLdouble eyey, GLdouble eyez, GLdouble centerx,
 {
     float forward[3], side[3], up[3];
     GLfloat m[4][4];
- 
+    
+    /* center - eye，并规范化，得到相机坐标系负z轴 */
     forward[0] = centerx - eyex;
     forward[1] = centery - eyey;
     forward[2] = centerz - eyez;
- 
+    normalize(forward);
+    
+    /* UP向量 */
     up[0] = upx;
     up[1] = upy;
     up[2] = upz;
  
-    normalize(forward);
- 
-    /* Side = forward x up */
+    
+    /* Side = forward x up，获得垂直于forward 和 up所在平面的单位向量，即为相机坐标系x轴*/
     cross(forward, up, side);
     normalize(side);
  
-    /* Recompute up as: up = side x forward */
+    /* Recompute up as: up = side x forward 
+     * 修正up向量，令up垂直于side 和 forward所在平面，即为最终的相机坐标系y轴
+     */
     cross(side, forward, up);
- 
+    
+    
+    /* 运用up, side, forward三个单位正交基构建旋转矩阵M，以下以首字母示意up, side, forward
+     *        /  s[0]   s[1]  s[2] \
+     *  M =  |   u[0]   u[1]  u[2]  |
+     *        \ -f[0]  -f[1] -f[2] /
+     */
     __gluMakeIdentityf(&m[0][0]);
-    m[0][0] = side[0];
-    m[1][0] = side[1];
-    m[2][0] = side[2];
- 
-    m[0][1] = up[0];
-    m[1][1] = up[1];
-    m[2][1] = up[2];
- 
-    m[0][2] = -forward[0];
-    m[1][2] = -forward[1];
-    m[2][2] = -forward[2];
- 
+    m[0][0] = side[0]; m[1][0] = side[1]; m[2][0] = side[2];
+    m[0][1] = up[0]; m[1][1] = up[1]; m[2][1] = up[2];
+    m[0][2] = -forward[0]; m[1][2] = -forward[1]; m[2][2] = -forward[2];
+    
+    /*  数据准备完毕，执行操作 
+     *  假设当前矩阵为C，则执行操作后当前矩阵变为：C*M*T
+     *  根据矩阵乘法从右到左原则，且相机始终不运动(运动的是世界坐标系)，该函数：
+     *  1. 世界坐标系 反向 平移eye向量
+     *  2. 以M为旋转矩阵做旋转变换
+     */
     glMultMatrixf(&m[0][0]);
     glTranslated(-eyex, -eyey, -eyez);
 }
