@@ -1,5 +1,6 @@
-# OpenGL`gluLookAt()`函数的深入理解
+# OpenGL视图变换深入理解
 
+## 通过`gluLookAt()`函数深入理解OpenGL视图变换
 
 ```
 void gluLookAt(	GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ,           // Specifies the position of the eye point.      相机位置
