@@ -86,9 +86,10 @@ gluLookAt(GLdouble eyex, GLdouble eyey, GLdouble eyez, GLdouble centerx,
     
     
     /* 运用up, side, forward三个单位正交基构建旋转矩阵M，以下以首字母示意up, side, forward
-     *        /  s[0]   s[1]  s[2] \
-     *  M =  |   u[0]   u[1]  u[2]  |
-     *        \ -f[0]  -f[1] -f[2] /
+     *        / s[0]   s[1]  s[2]  0 \
+     *  M =  |  u[0]   u[1]  u[2]  0  |
+     *       | -f[0]  -f[1] -f[2]  0  |
+     *        \ 0      0     0     1 /
      */
     __gluMakeIdentityf(&m[0][0]);
     m[0][0] = side[0]; m[1][0] = side[1]; m[2][0] = side[2];
