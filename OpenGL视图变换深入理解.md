@@ -31,8 +31,8 @@ void gluLookAt(	GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ,           // Specif
 
 1. 将参考点与视点的连线构成的向量归一化得到 `f`，即相机坐标系的负z轴
 2. 将上方向向量归一化得到 `UP*`
-3. 叉乘`f`和`UP*`可以得到s，即相机坐标系的x轴
-4. 叉乘`f`和`s`可以得到`u`，即相机坐标系的y轴
+3. 叉乘`f`和`UP*`可以得到s，即相机坐标系的正x轴，这也是第1步中计算的`f`是负z轴而不是正z轴的原因，(-z)×(+y) = (+x)
+4. 叉乘`f`和`s`可以得到`u`，即相机坐标系的正y轴
 5. 经过以上步骤，可以构建一个矩阵M：
 
 ![M矩阵](Images/gluLookAtM.png)
