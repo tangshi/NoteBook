@@ -3,7 +3,7 @@
 1. 下载并安装跨平台编译系统[CMake](http://www.cmake.org/download/)
 2. 下载并安装[NVIDIA Cg](https://developer.nvidia.com/cg-toolkit-download)
 3. 下载Ogre源代码。一般在[官网下载页面](http://www.ogre3d.org/download/source)下载，也可到源码托管网站([Bitbucket](https://bitbucket.org))下载[Ogre源代码](https://bitbucket.org/sinbad/ogre/downloads)，下载的内容更为丰富。
-4. 下载Ogre依赖库。Ogre提供了[依赖库压缩包](http://www.ogre3d.org/download/source)，解压依赖库到Ogre源代码根目录下名为`Dependencies`的文件夹内。(也可自行安装各个依赖库的官方版，使用homebrew可以很方便地安装`boost`、`freetype`、`zzip`、`freeimage`、`Doxygen`等大部分依赖库)。
+4. 下载Ogre依赖库。Ogre提供了[依赖库压缩包链接](http://www.ogre3d.org/download/source)，其真实地址在[这里](http://sourceforge.net/projects/ogre/files/ogre-dependencies-mac/)，解压依赖库到Ogre源代码根目录下名为`Dependencies`的文件夹内。(也可自行安装各个依赖库的官方版，使用homebrew可以很方便地安装`boost`、`freetype`、`zzip`、`freeimage`、`Doxygen`等大部分依赖库)。
 5. 新建一个`build`文件夹用于编译(一般新建在Ogre源代码根目录下)。
 6. 运行CMake。设置`Where is the source code`为Ogre源代码路径，设置`Where to build the binaries`为上一步新建的`build`文件夹。点击`configure`，选择生成工具为`Xcode`，编译器选择默认，完成配置。接下来CMake会自动根据配置搜集编译的环境信息，最后出现一个罗列了编译选项的面板，可以根据自己的喜好勾选这些选项，一般不需要改变，默认即可(注意，看到那些选项是醒目的红色不要紧张，那是CMake将发现的新变量显示为红色，因为是首次配置，所以所有的变量都是红色的)。选定编译选项之后，再点击一次`configure`并点击`Generate`。CMake将生成编译Ogre所需的编译系统。
 7. 回到`build`文件夹，你会发现CMake已经将整个编译系统生成在这个文件夹内，双击工程文件`OGRE.xcodeproj`打开Ogre工程。
