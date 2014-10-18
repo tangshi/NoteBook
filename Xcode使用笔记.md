@@ -1,6 +1,19 @@
 #### 调试笔记
 
+**警告信息：**
+
+> warning: no rule to process file 'media/materials/programs/Ocean2HLSL_Cg.vert' of type sourcecode.glsl for architecture x86_64
+
+**警告原因：**
+
+Xcode将一些文件误以为是编译源代码, 将这些文件放到了 (Compile Sources) 文件夹里。
+只需在`Build Phases`下的`Compile Sources`选项里移除将误认文件即可
+
+
+#### 调试笔记
+
 **错误信息：**
+
 > dyld: Library not loaded: @executable_path...  
 > ...  
 > image not found
