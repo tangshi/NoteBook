@@ -25,7 +25,7 @@ void gluLookAt(	GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ,           // Specif
 
 ##### 函数操作流程
 
-![gluLookAt Description](Images/gluLookAtDesc.png)
+![gluLookAt Description](Images/OpenGL/gluLookAtDesc.png)
 
 ##### 解读操作流程
 
@@ -35,7 +35,7 @@ void gluLookAt(	GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ,           // Specif
 4. 叉乘`f`和`s`可以得到`u`，即相机坐标系的正y轴
 5. 经过以上步骤，可以构建一个矩阵M：
 
-![M矩阵](Images/gluLookAtM.png)
+![M矩阵](Images/OpenGL/gluLookAtM.png)
 
 
 `gluLookAt`函数等价与以下操作：
