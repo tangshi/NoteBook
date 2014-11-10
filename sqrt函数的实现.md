@@ -36,7 +36,7 @@ From: <http://www.cnblogs.com/pkuoliver/archive/2010/10/06/sotry-about-sqrt.html
 
 然后看看和系统函数性能和精度的差别（其中时间单位不是秒也不是毫秒，而是CPU Tick，不管单位是什么，统一了就有可比性）  
 
-![](images/sqrt函数的实现/sqrt1.png)
+![](Images/sqrt函数的实现/sqrt1.png)
    
 
 从图中可以看出，二分法和系统的方法结果上完全相同，但是性能上整整差了几百倍。为什么会有这么大的区别呢？难道系统有什么更好的办法？难道……哦，对了，回忆下我们曾经的高数课，曾经老师教过我们“牛顿迭代法快速寻找平方根”，或者这种方法可以帮助我们，具体步骤如下： 
@@ -52,7 +52,7 @@ From: <http://www.cnblogs.com/pkuoliver/archive/2010/10/06/sotry-about-sqrt.html
 ( 1.42189..+ 2/1.42189..) / 2 = 1.41423..  
 ```
 
-![](images/sqrt函数的实现/sqrt2.jpg)
+![](Images/sqrt函数的实现/sqrt2.jpg)
 
 这种算法的原理很简单，我们仅仅是不断用(x,f(x))的切线来逼近方程x^2-a=0的根。根号a实际上就是x^2-a=0的一个正实根，这个函数的导数是2x。也就是说，函数上任一点(x,f(x))处的切线斜率是2x。那么，x-f(x)/(2x)就是一个比x更接近的近似值。代入 f(x)=x^2-a得到x-(x^2-a)/(2x)，也就是(x+a/x)/2。 
 
@@ -76,7 +76,7 @@ From: <http://www.cnblogs.com/pkuoliver/archive/2010/10/06/sotry-about-sqrt.html
 
 然后我们再来看下性能测试： 
 
-![](images/sqrt函数的实现/sqrt3.png)
+![](Images/sqrt函数的实现/sqrt3.png)
 
 
 哇塞，性能提高了很多，可是和系统函数相比，还是有这么大差距，这是为什么呀？想啊想啊，想了很久仍然百思不得其解。突然有一天，我在网上看到一个神奇的方法，于是就有了今天的这篇文章，废话不多说，看代码先： 
@@ -98,7 +98,7 @@ From: <http://www.cnblogs.com/pkuoliver/archive/2010/10/06/sotry-about-sqrt.html
 
 然后我们最后一次来看下性能测试： 
 
-![](images/sqrt函数的实现/sqrt4.png)
+![](Images/sqrt函数的实现/sqrt4.png)
 
 这次真的是质变了，结果竟然比系统的还要好!哥真的是震惊了！！！哥吐血了！！！一个函数引发了血案！！！
 
