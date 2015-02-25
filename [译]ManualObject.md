@@ -34,7 +34,7 @@
 
 > 虽然所有mesh都有顶点缓存，但不是所有mesh都有索引缓存。比如，我们接下来要创建的mesh就没有索引缓存，因为我们想创建一个空长方形(与填充长方形(filled rectangle)相对)。最后，注意顶点缓存和索引缓存通常存储在video card内存中，所以你的软件只能给video card发送一组简单的、离散的指令集来告诉它使用那些预先定义过的缓存来一次性渲染一个完整的3D mesh。
   
-### How to create 3D objects (by code)   
+### 如何创建一个三维物体(用代码)   
 - - - - -
 这部分摘自[Intermediate Tutorial 4](http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Intermediate+Tutorial+4).
 
