@@ -1,0 +1,76 @@
+腾讯优图windows平台移植笔记（C++SDK）
+==================================
+
+1. 下载源码
+2. 编译OpenSSL
+3. 编译LibCurl
+4. 在Visual Studio中新建示例工程
+
+
+### 下载源码
+
+- 从[优图SDK发布页面](https://github.com/TencentYouTu/Cplusplus_sdk)下载源代码，直接下载master分支即可，所下载的源码包含OpenSSL和LibCurl
+- 实践中发现自带的OpenSSL源码编译的时候会有一些问题，自行到[OpenSSL的Github主页上](https://github.com/openssl/openssl)下载了最新稳定版(OpenSSl 1.0.1p)
+- 解压优图源码到指定目录，以下用`${Cplusplus_sdk}`表示
+
+### 编译OpenSSL
+
+进入OpenSSL源码目录，根据文件`INSTALL.W32`的指导编译OpenSSL，主要步骤如下：
+
+- 安装VS（我安装的是VS2013 Express）
+- 安装Perl（我下载安装的是[ActivePerl](http://www.activestate.com/activeperl)）
+- 运行命令行，进入OpenSSL源码目录`${OPENSSL_SRC}`
+- 运行`C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\vsvars32.bat`载入VS的环境变量
+- 运行以下命令编译、安装OpenSSL：
+
+```
+perl Configure VC-WIN32 no-asm --prefix=${Cplusplus_sdk}\thirdparty\openssl
+ms\do_ms
+nmake -f ms\ntdll.mak
+nmake -f ms\ntdll.mak install
+```
+
+### 编译LibCurl
+
+- 运行命令行，进入LibCurl源码目录`${LIBCURL_SRC}`，根据文件`${LIBCURL_SRC}\\winbuild\\BUILD.WINDOWS.txt`的指导编译LibCurl，主要步骤如下：
+- 运行`C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\Common7\\Tools\\vsvars32.bat`载入VS的环境变量
+- 运行以下命令编译LibCurl：
+
+```
+cd `${LIBCURL_SRC}\\winbuild`
+nmake /f Makefile.vc mode=static VC=12 WITH_DEVEL=..\..\..\openssl WITH_SSL=static ENABLE_IPV6=no ENABLE_IDN=no DEBUG=yes
+```
+
+- 编译完成后，将`${Cplusplus_sdk}\\thirdparty\\curl\\curl-7.40.0\\builds\\libcurl-vc12-x86-debug-static-ssl-static-sspi`文件夹下的include，lib和bin三个文件夹复制到``${LIBCURL_SRC}`
+
+### 在Visual Studio中新建示例工程
+
+新建工程有几个注意点：
+
+1. SDK中有几个.cpp文件不要忘了加到工程中
+2. 设置附加包含目录、附加库目录和附加库
+3. **重点: **添加预处理器定义：`CURL_STATICLIB`，具体为属性->配置属性->C/C++->预处理器定义
+4. 删除或替换一些linux平台有而windows没有的东西：
+	- `<sys/time.h>`头文件直接删掉
+	- `srandom`、`random`函数使用`srand`、`rand`函数替换
+	- `snprintf`函数用`_snprintf`或`_snprintf_s`函数替换，注意二者略有差别
+	- ytopen_sdk.cpp文件中的`read_image`函数有问题，修改如下：
+	
+```cpp
+int read_image(string filesrc, string& data)
+{
+	// 前半部分不变，略
+	// ......
+	// ......
+
+    // 此处原为:
+	// char image_data[1024*1024*2];
+	char *image_data = new char[length];
+	fr.read(image_data, length);
+	fr.close();
+
+	data.assign(image_data, length);
+	
+	return 0;
+}
+```
