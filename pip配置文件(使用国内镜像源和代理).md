@@ -20,4 +20,4 @@ trusted-host=mirrors.aliyun.com # 信任阿里云的镜像源，否则会有警�
 ```
 
 配置文件的原则就是，凡是`pip`命令行的参数都可以在配置文件里定义其默认值！   
-至于`[global]`、`[install]`等标志我没找到具体说明，估计是配置参数的作用范围。
+至于`[global]`、`[install]`等标志用于声明配置项的作用域，`[global]`下的配置项全局有效，而`[install]`下的配置项只在使用`pip install`命令时有效。
